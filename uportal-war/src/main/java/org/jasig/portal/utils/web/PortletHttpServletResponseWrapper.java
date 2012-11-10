@@ -44,7 +44,6 @@ import org.jasig.portal.utils.Servlet3WrapperUtils;
  * discard all data written and log byte/char counts at warn level on close.
  * 
  * @author Eric Dalquist
- * @version $Revision$
  */
 public class PortletHttpServletResponseWrapper extends AbstractHttpServletResponseWrapper {
     private final IPortletWindow portletWindow;

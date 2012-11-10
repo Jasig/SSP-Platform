@@ -19,18 +19,6 @@
 
 package org.jasig.portal.url;
 
-import java.security.Principal;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,6 +32,12 @@ import org.jasig.portal.user.IUserInstanceManager;
 import org.jasig.portal.utils.ArrayEnumerator;
 import org.jasig.portal.utils.Servlet3WrapperUtils;
 import org.jasig.portal.utils.web.AbstractHttpServletRequestWrapper;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
+import java.util.*;
+
 
 /**
  * Portal wide request wrapper. Provides portal specific information for request parameters,
@@ -66,7 +60,7 @@ public class PortalHttpServletRequestWrapperImpl extends AbstractHttpServletRequ
     
     protected final Log logger = LogFactory.getLog(this.getClass());
     
-    private final Map<String, Object> additionalHeaders = new LinkedHashMap<String, Object>();
+    private final Map<String, String> additionalHeaders = new LinkedHashMap<String, String>();
     private final HttpServletResponse httpServletResponse;
     private final IUserInstanceManager userInstanceManager;
     
@@ -88,7 +82,7 @@ public class PortalHttpServletRequestWrapperImpl extends AbstractHttpServletRequ
 
     /**
      * Construct a writable this.request wrapping a real this.request
-     * @param this.request Request to wrap, can not be null.
+     * @param request Request to wrap, can not be null.
      */
     private PortalHttpServletRequestWrapperImpl(HttpServletRequest request, HttpServletResponse response, IUserInstanceManager userInstanceManager) {
         super(request);
@@ -137,8 +131,8 @@ public class PortalHttpServletRequestWrapperImpl extends AbstractHttpServletRequ
     }
 
     @Override
-    public Enumeration<?> getHeaders(String name) {
-        final Object value = this.additionalHeaders.get(name);
+    public Enumeration<String> getHeaders(String name) {
+        final String value = this.additionalHeaders.get(name);
         if (value == null) {
             return super.getHeaders(name);
         }
@@ -147,11 +141,11 @@ public class PortalHttpServletRequestWrapperImpl extends AbstractHttpServletRequ
     }
 
     @Override
-    public Enumeration<?> getHeaderNames() {
-        final Set<Object> headerNames = new LinkedHashSet<Object>();
+    public Enumeration<String> getHeaderNames() {
+        final Set<String> headerNames = new LinkedHashSet<String>();
         
-        for (final Enumeration<?> headerNamesEnum = super.getHeaderNames(); headerNamesEnum.hasMoreElements();) {
-            final Object name = headerNamesEnum.nextElement();
+        for (final Enumeration<String> headerNamesEnum = super.getHeaderNames(); headerNamesEnum.hasMoreElements();) {
+            final String name = headerNamesEnum.nextElement();
             headerNames.add(name);
         }
         
@@ -274,7 +268,6 @@ public class PortalHttpServletRequestWrapperImpl extends AbstractHttpServletRequ
     /* (non-Javadoc)
      * @see org.jasig.portal.url.AbstractHttpServletRequestWrapper#getLocales()
      */
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration<Locale> getLocales() {
         if (super.getSession(false) == null) {

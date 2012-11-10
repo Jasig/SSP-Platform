@@ -170,8 +170,8 @@
         <jline.version>1.0</jline.version>
         <joda-time.version>2.1</joda-time.version>
         <json-lib-ext-spring.version>1.0.2</json-lib-ext-spring.version>
-        <jsp-api.version>2.1.1</jsp-api.version>
-        <jstl.version>1.1.2</jstl.version>
+        <jsp-api.version>2.2</jsp-api.version>
+        <jstl.version>1.2</jstl.version>
         <jtidy.version>4aug2000r7-dev</jtidy.version>
         <junit.version>4.10</junit.version>
         <logback.version>1.0.6</logback.version>
@@ -184,10 +184,10 @@
         <pluto.version>2.1.0-M2</pluto.version>
         <portlet-api.version>2.0</portlet-api.version>
         <quartz.version>1.8.4</quartz.version>
-        <resource-server.version>1.0.26</resource-server.version>
-        <servlet-api.version>2.5</servlet-api.version>
-        <slf4j.version>1.6.6</slf4j.version>
-        <spring-framework.version>3.2.8.RELEASE</spring-framework.version>
+        <resource-server.version>1.0.27</resource-server.version>
+        <servlet-api.version>3.0.1</servlet-api.version>
+        <slf4j.version>1.7.2</slf4j.version>
+        <spring-framework.version>3.1.3.RELEASE</spring-framework.version>
         <spring-ldap.version>1.3.1.RELEASE</spring-ldap.version>
         <spring-security.version>3.1.3.RELEASE</spring-security.version>
         <standard.version>1.1.2</standard.version>
@@ -450,7 +450,7 @@
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
+                <artifactId>javax.servlet-api</artifactId>
                 <version>${servlet-api.version}</version>
             </dependency>
             <dependency>
