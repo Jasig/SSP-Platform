@@ -151,7 +151,7 @@ public class PortletRendererImpl implements IPortletRenderer {
 
         
         httpServletRequest = this.setupPortletRequest(httpServletRequest);
-        httpServletResponse = new PortletHttpServletResponseWrapper(httpServletResponse, portletWindow);
+        httpServletResponse = PortletHttpServletResponseWrapper.create(httpServletResponse, portletWindow);
         
         //Execute the action, 
         if (this.logger.isDebugEnabled()) {
@@ -199,11 +199,12 @@ public class PortletRendererImpl implements IPortletRenderer {
         final IPortletWindow portletWindow = this.portletWindowRegistry.getPortletWindow(httpServletRequest, portletWindowId);
         
         httpServletRequest = this.setupPortletRequest(httpServletRequest);
-        httpServletResponse = new PortletHttpServletResponseWrapper(httpServletResponse, portletWindow);
+
+        httpServletResponse = PortletHttpServletResponseWrapper.create(httpServletResponse, portletWindow);
 
         enforceConfigPermission(httpServletRequest, portletWindow);
-        
-        //Execute the action, 
+
+        //Execute the action,
         if (this.logger.isDebugEnabled()) {
             this.logger.debug("Executing portlet event for window '" + portletWindow + "'");
         }
@@ -416,7 +417,7 @@ public class PortletRendererImpl implements IPortletRenderer {
         
         //Setup the request and response
         httpServletRequest = this.setupPortletRequest(httpServletRequest);
-        httpServletResponse = new PortletMimeHttpServletResponseWrapper(httpServletResponse, portletWindow, portletOutputHandler, cacheControl);
+        httpServletResponse = PortletMimeHttpServletResponseWrapper.create(httpServletResponse, portletWindow, portletOutputHandler, cacheControl);
         
         httpServletRequest.setAttribute(ATTRIBUTE__PORTLET_CACHE_CONTROL, cacheControl);
         httpServletRequest.setAttribute(ATTRIBUTE__PORTLET_OUTPUT_HANDLER, cachingPortletOutputHandler);
@@ -595,7 +596,7 @@ public class PortletRendererImpl implements IPortletRenderer {
         
         //Setup the request and response
         httpServletRequest = this.setupPortletRequest(httpServletRequest);
-        httpServletResponse = new PortletResourceHttpServletResponseWrapper(httpServletResponse, portletWindow, portletOutputHandler, cacheControl);
+        httpServletResponse = PortletResourceHttpServletResponseWrapper.create(httpServletResponse, portletWindow, portletOutputHandler, cacheControl);
         
         httpServletRequest.setAttribute(ATTRIBUTE__PORTLET_CACHE_CONTROL, cacheControl);
         httpServletRequest.setAttribute(ATTRIBUTE__PORTLET_OUTPUT_HANDLER, cachingPortletOutputHandler);
@@ -775,7 +776,7 @@ public class PortletRendererImpl implements IPortletRenderer {
 			portletWindow.setExpirationCache(null);
 
 			httpServletRequest = this.setupPortletRequest(httpServletRequest);
-			httpServletResponse = new PortletHttpServletResponseWrapper(httpServletResponse, portletWindow);
+			httpServletResponse = PortletHttpServletResponseWrapper.create(httpServletResponse, portletWindow);
 
 			httpServletRequest.setAttribute(AdministrativeRequestListenerController.DEFAULT_LISTENER_KEY_ATTRIBUTE, "sessionActionListener");
 			httpServletRequest.setAttribute(PortletSessionAdministrativeRequestListener.ACTION, PortletSessionAdministrativeRequestListener.SessionAction.CLEAR);
@@ -833,7 +834,7 @@ public class PortletRendererImpl implements IPortletRenderer {
     }
 
     protected HttpServletRequest setupPortletRequest(HttpServletRequest httpServletRequest) {
-        final PortletHttpServletRequestWrapper portletHttpServletRequestWrapper = new PortletHttpServletRequestWrapper(httpServletRequest);
+        final HttpServletRequest portletHttpServletRequestWrapper = PortletHttpServletRequestWrapper.create(httpServletRequest);
         portletHttpServletRequestWrapper.setAttribute(PortletDelegationLocator.PORTLET_DELECATION_LOCATOR_ATTR, this.portletDelegationLocator);
         
         return portletHttpServletRequestWrapper;
