@@ -873,9 +873,7 @@
     <!-- Copyright -->
     <script type="text/javascript">
 		 up.jQuery(document).ready(function() {
-                var platformBuildDate = <xsl:value-of select="$BUILDDATE"/>;
-                var platformVersion = "<xsl:value-of select="$UP_VERSION"/>";
-                var platformRevision = "<xsl:value-of select="$SCMREVISION"/>";
+                var clickVersionLabel = "<xsl:value-of select="upMsg:getMessage('ssp.footer.click', $USER_LANG)"/>";
                 var platformInfo = "";
                 var sspInfo = "";
                 var toggle = 0;
@@ -883,16 +881,26 @@
                 up.jQuery.ajax({
 					type: 'get',
 			        url: '/ssp/api/1/server/version',			       
-			        success: function(data)
-			        {
-			           sspInfo = "<p>SSP Version: " +data.artifactVersion
-			           +"   |   SSP BuildDate: " +intToDate(data.buildDate) +"   |   SSP SCM Revision: " +data.scmRevision +" </p>";
-                       platformInfo = "<p>Platform Version: " +platformVersion  +"  |  Platform BuildDate: "
-                       +intToDate(platformBuildDate) +"  |  Platform SCM Revision: " +platformRevision +" </p>";
-                       up.jQuery('#InfoToggle').text("Click here for Version Information");
+			        success: function(data) {
+
+                        sspInfo = "<p>" + "<xsl:value-of select="upMsg:getMessage('ssp.footer.version', $USER_LANG)"/>"
+                            + ": " + data.artifactVersion + "   |   "
+                            + "<xsl:value-of select="upMsg:getMessage('ssp.footer.build.date', $USER_LANG)"/>" + ": "
+                            + intToDate(data.buildDate) + "   |   "
+                            + "<xsl:value-of select="upMsg:getMessage('ssp.footer.scm.revision', $USER_LANG)"/>" + ": "
+                            + data.scmRevision + " </p>";
+
+                        platformInfo = "<p>"
+                            + "<xsl:value-of select="upMsg:getMessage('ssp.footer.platform.version', $USER_LANG)"/>"
+                            + ": " + "<xsl:value-of select="$UP_VERSION"/>"
+                            + "  |  " + "<xsl:value-of select="upMsg:getMessage('ssp.footer.platform.build.date', $USER_LANG)"/>"
+                            + ": " + intToDate(<xsl:value-of select="$BUILDDATE"/>) + "  |  "
+                            + "<xsl:value-of select="upMsg:getMessage('ssp.footer.platform.scm.revision', $USER_LANG)"/>"
+                            + ": " + "<xsl:value-of select="$SCMREVISION"/>" + " </p>";
+
+                        up.jQuery('#InfoToggle').text(clickVersionLabel);
 			        },
-                    error: function()
-                    {
+                    error: function() {
                         toggle = -1;
                     }
 	 			});
@@ -902,7 +910,7 @@
                             up.jQuery('#InfoToggle').html(sspInfo + platformInfo);
                             toggle = 1;
                         } else if ( toggle === 1 ) {
-                            up.jQuery('#InfoToggle').text("Click here for Version Information");
+                            up.jQuery('#InfoToggle').text(clickVersionLabel);
                             toggle = 0;
                         } else {
                             up.jQuery('#InfoToggle').text("");
@@ -935,8 +943,7 @@
         }
     </script>
     <div class="copyright">
-         <p>Student Success Plan   |   Copyright <script type="text/javascript">document.write(new Date().getFullYear());</script>, Apereo Foundation   |   All rights reserved.</p>
-         <div style="cursor: pointer" id="InfoToggle"> </div>
+        <p><xsl:value-of select="upMsg:getMessage('ssp.footer.copyright.first', $USER_LANG)"/>   |   <xsl:value-of select="upMsg:getMessage('ssp.footer.copyright.second', $USER_LANG)"/>   |   <xsl:value-of select="upMsg:getMessage('ssp.footer.copyright.third', $USER_LANG)"/></p>         <div style="cursor: pointer" id="InfoToggle"> </div>
     </div>
 
   </xsl:template>

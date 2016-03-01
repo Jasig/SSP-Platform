@@ -18,12 +18,14 @@
  */
 package org.jasig.portal.i18n;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
-
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jasig.portal.properties.PropertiesManager;
@@ -31,6 +33,8 @@ import org.jasig.portal.security.IPerson;
 import org.jasig.portal.utils.DocumentFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import javax.servlet.http.Cookie;
+
 
 /**
  * Manages locales on behalf of a user. 
@@ -60,6 +64,8 @@ public class LocaleManager implements Serializable {
      * This value will be used when the corresponding property cannot be loaded.
      */
     public static final boolean DEFAULT_LOCALE_AWARE = false;
+
+    private static String SSP_LANGUAGE_COOKIE_NAME = "defaultLangCode"; //added for SSP i8n/localization
     
     private static boolean localeAware = PropertiesManager.getPropertyAsBoolean("org.jasig.portal.i18n.LocaleManager.locale_aware", DEFAULT_LOCALE_AWARE);
     private static Locale jvmLocale;
@@ -69,6 +75,7 @@ public class LocaleManager implements Serializable {
     private Locale[] sessionLocales;
     private Locale[] browserLocales;
     private Locale[] userLocales;
+    private Locale[] sspSelectedLanguageLocales;
 
     /**
      * Constructor that associates a locale manager with a user.
@@ -96,6 +103,21 @@ public class LocaleManager implements Serializable {
      */
     public LocaleManager(IPerson person, Locale[] userLocales, String acceptLanguage) {
         this(person, userLocales);
+        this.browserLocales = parseLocales(acceptLanguage);
+
+    }
+
+    /**
+     * Added for SSP i8n/localization, used to look at SSP's language cookie
+     *  before other options
+     * @param person
+     * @param userLocales
+     * @param acceptLanguage
+     * @param cookies
+     */
+    public LocaleManager(IPerson person, Locale[] userLocales, String acceptLanguage, Cookie[] cookies) {
+        this(person, userLocales);
+        this.sspSelectedLanguageLocales = parseSSPSelectedLocale(cookies);
         this.browserLocales = parseLocales(acceptLanguage);
     }
 
@@ -136,13 +158,18 @@ public class LocaleManager implements Serializable {
         // interface to do this work.
         List locales = new ArrayList();
         // Add highest priority locales first
+
+        //Idea here is to fall back to browser if SSP cookie or default language not recognized
+        if (ArrayUtils.isNotEmpty(sspSelectedLanguageLocales)) {
+            addToLocaleList(locales, sspSelectedLanguageLocales); //get default language cookie set in SSP
+        }
+        addToLocaleList(locales, browserLocales);  //enabled for SSP i8n, fall back to browser if SSP lang cookie isn't found
+
         addToLocaleList(locales, sessionLocales);
-        addToLocaleList(locales, userLocales);
-        // We will ignore browser locales until we know how to
-        // translate them into proper java.util.Locales
-        //addToLocaleList(locales, browserLocales);
+        addToLocaleList(locales, userLocales);;
         addToLocaleList(locales, portalLocales);
         addToLocaleList(locales, new Locale[] { jvmLocale });
+
         return (Locale[])locales.toArray(new Locale[0]);
     }
     
@@ -219,6 +246,33 @@ public class LocaleManager implements Serializable {
         
         return locale;
     }
+
+    /**
+     * Helper method to parse cookies for SSP Default Language Cookie
+     *   and return converted string value as Locale
+     *    In many cases this will be null either because cookie can't be
+     *     parsed (improper ISO lang code) or other factors outside of our control.
+     * @param cookies
+     * @return
+     */
+     public static Locale[] parseSSPSelectedLocale (Cookie[] cookies) {
+         if (cookies == null) {  //returns null if there aren't any
+            return null;
+         }
+
+         for (final Cookie cookie : cookies) {
+             if (SSP_LANGUAGE_COOKIE_NAME.equals(cookie.getName().trim())) {
+                 Locale sspSelectedLocale = parseLocale(cookie.getValue());
+
+                if ( StringUtils.isNotBlank(sspSelectedLocale.getLanguage())) {
+                    return new Locale[] {sspSelectedLocale};  //not guaranteed successful language match from parseLocale
+
+                }
+             }
+         }
+
+         return null;
+     }
     
     /**
      * Constructs a comma-delimited list of locales
@@ -353,5 +407,4 @@ public class LocaleManager implements Serializable {
         sb.append("\n");
         return sb.toString();
     }
-
 }

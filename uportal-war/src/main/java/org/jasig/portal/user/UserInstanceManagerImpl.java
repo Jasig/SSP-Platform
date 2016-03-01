@@ -20,10 +20,8 @@ package org.jasig.portal.user;
 
 import java.io.Serializable;
 import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,6 +41,7 @@ import org.jasig.portal.security.PortalSecurityException;
 import org.jasig.portal.url.IPortalRequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 /**
  * Determines which user instance object to use for a given user.
@@ -187,7 +186,7 @@ public class UserInstanceManagerImpl implements IUserInstanceManager {
     protected LocaleManager getLocaleManager(HttpServletRequest request, IPerson person) {
         final String acceptLanguage = request.getHeader("Accept-Language");
         final Locale[] userLocales = localeStore.getUserLocales(person);
-        return new LocaleManager(person, userLocales, acceptLanguage);
+        return new LocaleManager(person, userLocales, acceptLanguage, request.getCookies());
     }
 
     protected String getUserAgent(HttpServletRequest request) {
