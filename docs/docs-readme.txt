@@ -19,8 +19,9 @@
 
 Hey!  Where's the documentation?
 
+SSP is documented in it's wiki: https://wiki.jasig.org/display/SSP/Home
 
-uPortal is documented in its wiki and its manual, not here in source control.
+SSP-Platform is based on uPortal which is documented in its wiki and its manual, not here in source control.
 
 uPortal manual:
 http://www.ja-sig.org/wiki/display/UPM31/Home
