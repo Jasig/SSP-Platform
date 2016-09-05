@@ -33,7 +33,7 @@ Alternatively, SSP-Platform is built/forked from uPortal and more information on
 
 
 #### Requirements                                                                
-*  JDK 1.7.X - Just a JRE may not be sufficient, a full JDK is recommended
+*  JDK 1.8.X - Just a JRE may not be sufficient, a full JDK is recommended
 *  Servlet 3.1 Container - Tomcat 8.0 is recommended
 *  Maven 3.0.3  or later
 *  Ant 1.8.2 is recommended
