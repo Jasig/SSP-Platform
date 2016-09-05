@@ -20,8 +20,9 @@ package org.jasig.portal.portlet.rendering;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
-
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
+
 
 public class LazyServletOutputStream extends ServletOutputStream {
     private final Callable<ServletOutputStream> servletOutputStreamCreator;
@@ -125,5 +126,20 @@ public class LazyServletOutputStream extends ServletOutputStream {
 
     public void println(double d) throws IOException {
         getServletOutputStream().println(d);
+    }
+
+    @Override
+    public boolean isReady() {
+        if (servletOutputStream != null) {
+            return servletOutputStream.isReady();
+        }
+        return true;
+    }
+
+    @Override
+    public void setWriteListener(WriteListener writeListener) {
+        if (servletOutputStream != null) {
+            servletOutputStream.setWriteListener(writeListener);
+        }
     }
 }

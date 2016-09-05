@@ -24,11 +24,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Locale;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.output.CountingOutputStream;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.io.output.NullWriter;
@@ -36,6 +34,7 @@ import org.apache.commons.io.output.ProxyWriter;
 import org.jasig.portal.portlet.om.IPortletWindow;
 import org.jasig.portal.utils.DelegatingServletOutputStream;
 import org.jasig.portal.utils.Servlet3WrapperUtils;
+
 
 /**
  * Portlet response wrapper. Makes sure the portlet doesn't screw with the portal's response
@@ -210,6 +209,11 @@ public class PortletHttpServletResponseWrapper extends AbstractHttpServletRespon
     @Override
     public void setContentLength(int len) {
         this.logger.warn("Ignoring call to HttpServletResponse.setContentLength({}) from {}", len, portletWindow);
+    }
+
+    @Override
+    public void setContentLengthLong(long longLen) {
+        this.logger.warn("Ignoring call to HttpServletResponse.setContentLength({}) from {}", longLen, portletWindow);
     }
 
     @Override

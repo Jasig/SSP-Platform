@@ -20,8 +20,8 @@ package org.jasig.portal.utils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 
 /**
  * {@link ServletOutputStream} impl that delegates to an {@link OutputStream}
@@ -30,9 +30,16 @@ import javax.servlet.ServletOutputStream;
  */
 public class DelegatingServletOutputStream extends ServletOutputStream {
     private final OutputStream outputStream;
-    
+    private final ServletOutputStream servletOutputStream;
+
     public DelegatingServletOutputStream(OutputStream outputStream) {
         this.outputStream = outputStream;
+        this.servletOutputStream = null;
+    }
+
+    public DelegatingServletOutputStream(ServletOutputStream servletOutputStream) {
+        this.servletOutputStream = servletOutputStream;
+        this.outputStream = servletOutputStream;
     }
 
     public void write(int b) throws IOException {
@@ -53,5 +60,20 @@ public class DelegatingServletOutputStream extends ServletOutputStream {
 
     public void close() throws IOException {
         outputStream.close();
+    }
+
+    @Override
+    public boolean isReady() {
+        if (servletOutputStream != null) {
+            return servletOutputStream.isReady();
+        }
+        return true;
+    }
+
+    @Override
+    public void setWriteListener(WriteListener writeListener) {
+        if (servletOutputStream != null) {
+            servletOutputStream.setWriteListener(writeListener);
+        }
     }
 }

@@ -32,7 +32,6 @@ import org.jasig.portal.user.IUserInstanceManager;
 import org.jasig.portal.utils.ArrayEnumerator;
 import org.jasig.portal.utils.Servlet3WrapperUtils;
 import org.jasig.portal.utils.web.AbstractHttpServletRequestWrapper;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;

@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.servlet.AsyncContext;
 import javax.servlet.DispatcherType;
 import javax.servlet.RequestDispatcher;
@@ -35,14 +34,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-
+import javax.servlet.http.*;
 import org.apache.commons.lang.Validate;
+
 
 /**
  * A custom HttpServletRequest wrapper that does NOT extend {@link HttpServletRequestWrapper}
@@ -399,5 +393,20 @@ public abstract class AbstractHttpServletRequestWrapper implements HttpServletRe
     @Override
     public void logout() throws ServletException {
       this.httpServletRequest.logout();
+    }
+
+    @Override
+    public long getContentLengthLong() {
+        return httpServletRequest.getContentLengthLong();
+    }
+
+    @Override
+    public String changeSessionId() {
+        return httpServletRequest.changeSessionId();
+    }
+
+    @Override
+    public <T extends HttpUpgradeHandler> T upgrade(Class<T> aClass) throws IOException, ServletException {
+        return httpServletRequest.upgrade(aClass);
     }
 }
