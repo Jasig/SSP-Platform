@@ -363,45 +363,45 @@
 | only available to authenticated users.
 -->
     <xsl:template name="gallery">
-    	<xsl:if test="$AUTHENTICATED = 'true'">
-        <chunk-point/> <!-- Performance Optimization, see ChunkPointPlaceholderEventSource -->
-        <div class="up-gallery">
-            <h2 class="handle">
-                <a><span class="handle-arrow-up"><xsl:value-of select="upMsg:getMessage('customize', $USER_LANG)"/></span></a>
-            </h2>
-            <div class="fl-fix fl-col-mixed fl-col-mixed2 gallery-inner" style="display:none">
-                <div class="fl-col-side fl-force-left menu-wrapper">
-                    <ul class="menu" role="menu">
-                        <li class="add-content-link active" role="tab">
-                            <a href="javascript:;"><span><xsl:value-of select="upMsg:getMessage('add.stuff', $USER_LANG)"/></span></a>
-                        </li>
-                        <li class="use-content-link" role="tab">
-                            <a href="javascript:;"><span><xsl:value-of select="upMsg:getMessage('use.it', $USER_LANG)"/></span></a>
-                        </li>
-                        <li class="skin-link" role="tab">
-                            <a href="javascript:;"><span><xsl:value-of select="upMsg:getMessage('colors', $USER_LANG)"/></span></a>
-                        </li>
-                        <li class="layout-link last" role="tab">
-                            <a href="javascript:;"><span><xsl:value-of select="upMsg:getMessage('layouts', $USER_LANG)"/></span></a>
-                        </li>
-                    </ul>
-                    <div class="close-button">
-                        <a class="button"><span><xsl:value-of select="upMsg:getMessage('im.done', $USER_LANG)"/></span></a>
-                    </div>
-                </div>
-                <div class="fl-col-main content-wrapper" role="tabpanel">
-                    <div class="fl-fix content">
-                        <xsl:call-template name="gallery-add-content-pane"/>
-                        <xsl:call-template name="gallery-use-content-pane"/>
-                        <xsl:call-template name="gallery-skin-pane"/>
-                        <xsl:call-template name="gallery-layout-pane"/>
-                    </div>
-                </div>
-                <div id="galleryLoader" class="gallery-loader"><span><xsl:value-of select="upMsg:getMessage('loading', $USER_LANG)"/></span></div>
-            </div>
-        </div>
-        <chunk-point/> <!-- Performance Optimization, see ChunkPointPlaceholderEventSource -->
-        </xsl:if>
+    	<!--<xsl:if test="$AUTHENTICATED = 'true'">-->
+        <!--<chunk-point/> &lt;!&ndash; Performance Optimization, see ChunkPointPlaceholderEventSource &ndash;&gt;-->
+        <!--<div class="up-gallery">-->
+            <!--<h2 class="handle">-->
+                <!--<a><span class="handle-arrow-up"><xsl:value-of select="upMsg:getMessage('customize', $USER_LANG)"/></span></a>-->
+            <!--</h2>-->
+            <!--<div class="fl-fix fl-col-mixed fl-col-mixed2 gallery-inner" style="display:none">-->
+                <!--<div class="fl-col-side fl-force-left menu-wrapper">-->
+                    <!--<ul class="menu" role="menu">-->
+                        <!--<li class="add-content-link active" role="tab">-->
+                            <!--<a href="javascript:;"><span><xsl:value-of select="upMsg:getMessage('add.stuff', $USER_LANG)"/></span></a>-->
+                        <!--</li>-->
+                        <!--<li class="use-content-link" role="tab">-->
+                            <!--<a href="javascript:;"><span><xsl:value-of select="upMsg:getMessage('use.it', $USER_LANG)"/></span></a>-->
+                        <!--</li>-->
+                        <!--<li class="skin-link" role="tab">-->
+                            <!--<a href="javascript:;"><span><xsl:value-of select="upMsg:getMessage('colors', $USER_LANG)"/></span></a>-->
+                        <!--</li>-->
+                        <!--<li class="layout-link last" role="tab">-->
+                            <!--<a href="javascript:;"><span><xsl:value-of select="upMsg:getMessage('layouts', $USER_LANG)"/></span></a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                    <!--<div class="close-button">-->
+                        <!--<a class="button"><span><xsl:value-of select="upMsg:getMessage('im.done', $USER_LANG)"/></span></a>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="fl-col-main content-wrapper" role="tabpanel">-->
+                    <!--<div class="fl-fix content">-->
+                        <!--<xsl:call-template name="gallery-add-content-pane"/>-->
+                        <!--<xsl:call-template name="gallery-use-content-pane"/>-->
+                        <!--<xsl:call-template name="gallery-skin-pane"/>-->
+                        <!--<xsl:call-template name="gallery-layout-pane"/>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div id="galleryLoader" class="gallery-loader"><span><xsl:value-of select="upMsg:getMessage('loading', $USER_LANG)"/></span></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<chunk-point/> &lt;!&ndash; Performance Optimization, see ChunkPointPlaceholderEventSource &ndash;&gt;-->
+        <!--</xsl:if>-->
     </xsl:template>
 
  <xsl:template name="preferences">

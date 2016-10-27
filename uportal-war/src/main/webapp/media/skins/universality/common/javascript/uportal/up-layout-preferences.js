@@ -238,197 +238,197 @@ var uportal = uportal || {};
         that.components = {};
         
         // initialize the gallery component
-        that.components.gallery = up.PortalGallery(
-            ".up-gallery", 
-            {
-                // content browsing pane
-                browseContentPane: {
-                    options: {
-                
-                        // "add stuff" sub-pane
-                        portletBrowser: {
-                            options: {
-                                portletRegistry: {
-                                    options: { portletListUrl: that.options.channelRegistryUrl }
-                                },
-                                searchView: {
-                                    options: {searchInvitationMessage: that.options.messages.searchForStuff}
-                                },
-                                categoryListView: {
-                                    options: {rootCategoryName: that.options.messages.allCategories}
-                                },
-                                listeners: {
-                                    onPortletSelect: function(componentThat, portlet) {
-                                        var options, firstChannel;
-                                    
-                                        // set the main options for this persistence
-                                        // request
-                                        options = { action: 'addPortlet', channelID: portlet.id };
-                                        
-                                        // get the first channel element that's
-                                        // unlocked
-                                        firstChannel = $("div[id*=portlet_].movable:first");
-                                        
-                                        // if the page has no content just add
-                                        //  the new portlet to the tab
-                                        if (firstChannel.size() == 0) {
-                                            options['elementID'] = getActiveTabId();
-                                        } 
-                                        
-                                        // otherwise 
-                                        else {
-                                            options['elementID'] = up.defaultNodeIdExtractor(firstChannel);
-                                            options['position'] = 'insertBefore';
-                                        }
-                                        
-                                        that.persistence.update(options,
-                                           function(data) {
-                                              window.location = that.urlProvider.getTabUrl(getActiveTabId());
-                                           }
-                                        );
-                                    },
-                                    onPortletDrag: function (portlet, method, targetID) {
-                                        // Persist the portlet addition.
-                                        that.persistence.update(
-                                            {
-                                                action: "addPortlet",
-                                                channelID: portlet.id,
-                                                position: method,
-                                                elementID: targetID
-                                            },
-                                            function(xml) {
-                                                window.location = that.urlProvider.getTabUrl(getActiveTabId());
-                                            }
-                                        );
-                                    }
-                                }
-                            }
-                        },
-                        
-                        // "packaged stuff" sub-pane
-                        fragmentBrowser: {
-                            options: {
-                                fragmentServiceUrl: that.options.subscribableTabUrl,
-                                listeners: { 
-                                    onFragmentSelect: function(componentThat, fragment) {
-                                        var lastTab, targetId;
-                                        
-                                        // use the current last tab as the target id
-                                        lastTab = $("[id*=portalNavigation_]:last");
-                                        targetId = up.defaultNodeIdExtractor(lastTab);
-
-                                        // update the layout with the new
-                                        // tab subscription
-                                        that.persistence.update(
-                                            {
-                                                action: "subscribeToTab",
-                                                sourceID: fragment.ownerID,
-                                                method: 'appendAfter', 
-                                                elementID: targetId  
-                                            }, 
-                                            function(data) {
-                                                // redirect the browser to the
-                                                // new tab
-                                                window.location = that.urlProvider.getTabUrl(data.tabId);
-                                            }
-                                        );
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                
-                // use stuff pane
-                useContentPane: {
-                    options: {
-                        listeners: {
-                            // add a PortletBrowser to the use content pane
-                            onInitialize: function (overallThat) {
-                                up.PortletBrowser(".use-content", overallThat, {
-                                    portletRegistry: {
-                                        options: { portletListUrl: that.options.channelRegistryUrl }
-                                    },
-                                    categoryListView: {
-                                        type: "up.AjaxLayoutCategoryListView",
-                                        options: {rootCategoryName: that.options.messages.allCategories}
-                                    },
-                                    portletListView: {
-                                        type: "up.AjaxLayoutPortletListView"
-                                    },
-                                    searchView: {
-                                        options: {searchInvitationMessage: that.options.messages.searchForStuff}
-                                    },
-                                    listeners: {
-                                        // on portlet selection, redirect the
-                                        // browser to the selected portlet's
-                                        // focus URL
-                                        onPortletSelect: function(componentThat, portlet) {
-                                            window.location = that.urlProvider.getPortletUrl(portlet.fname);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    }
-                },
-                
-                // colors pane
-                skinPane: {
-                    options: {
-                        listeners: {
-                            onInitialize: function (overallThat) {
-                                // add a SkinSelector component to the skin pane
-                                up.SkinSelector(".skins", {
-                                    listeners: {
-                                        // when a skin is selected, update the
-                                        // persisted skin choice and reload
-                                        // the page with the new skin
-                                        onSelectSkin: function (skin) {
-                                            that.persistence.update(
-                                                { action: 'chooseSkin', skinName: skin.key }, 
-                                                function (data) {
-                                                    window.location = that.urlProvider.getTabUrl(getActiveTabId());
-                                                }
-                                            );
-                                        }
-                                    },
-                                    currentSkin: that.options.currentSkin,
-                                    skinListURL: (that.options.mediaPath + "/skinList.xml"),
-                                    mediaPath: that.options.mediaPath
-                                });
-                            }
-                        }
-                    }
-                },
-                
-                // layouts pane
-                layoutPane: {
-                    options: {
-                        listeners: {
-                            onInitialize: function (overallThat) {
-                                // add a LayoutSelector component to the 
-                                // layouts pane
-                                up.LayoutSelector(".layouts-list", {
-                                    currentLayout: getCurrentLayout(),
-                                    layouts: getPermittedLayouts(),
-                                    imagePath: that.options.mediaPath + "/common/images/",
-                                    listeners: {
-                                        // when a new layout is selected, call
-                                        // the locally-defined column update
-                                        // method
-                                        onLayoutSelect: function(layout, componentThat) {
-                                            updateColumns(layout, that);
-                                        }
-                                    },
-                                    strings: that.options.messages
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-        );
+//        that.components.gallery = up.PortalGallery(
+//            ".up-gallery",
+//            {
+//                // content browsing pane
+//                browseContentPane: {
+//                    options: {
+//
+//                        // "add stuff" sub-pane
+//                        portletBrowser: {
+//                            options: {
+//                                portletRegistry: {
+//                                    options: { portletListUrl: that.options.channelRegistryUrl }
+//                                },
+//                                searchView: {
+//                                    options: {searchInvitationMessage: that.options.messages.searchForStuff}
+//                                },
+//                                categoryListView: {
+//                                    options: {rootCategoryName: that.options.messages.allCategories}
+//                                },
+//                                listeners: {
+//                                    onPortletSelect: function(componentThat, portlet) {
+//                                        var options, firstChannel;
+//
+//                                        // set the main options for this persistence
+//                                        // request
+//                                        options = { action: 'addPortlet', channelID: portlet.id };
+//
+//                                        // get the first channel element that's
+//                                        // unlocked
+//                                        firstChannel = $("div[id*=portlet_].movable:first");
+//
+//                                        // if the page has no content just add
+//                                        //  the new portlet to the tab
+//                                        if (firstChannel.size() == 0) {
+//                                            options['elementID'] = getActiveTabId();
+//                                        }
+//
+//                                        // otherwise
+//                                        else {
+//                                            options['elementID'] = up.defaultNodeIdExtractor(firstChannel);
+//                                            options['position'] = 'insertBefore';
+//                                        }
+//
+//                                        that.persistence.update(options,
+//                                           function(data) {
+//                                              window.location = that.urlProvider.getTabUrl(getActiveTabId());
+//                                           }
+//                                        );
+//                                    },
+//                                    onPortletDrag: function (portlet, method, targetID) {
+//                                        // Persist the portlet addition.
+//                                        that.persistence.update(
+//                                            {
+//                                                action: "addPortlet",
+//                                                channelID: portlet.id,
+//                                                position: method,
+//                                                elementID: targetID
+//                                            },
+//                                            function(xml) {
+//                                                window.location = that.urlProvider.getTabUrl(getActiveTabId());
+//                                            }
+//                                        );
+//                                    }
+//                                }
+//                            }
+//                        },
+//
+//                        // "packaged stuff" sub-pane
+//                        fragmentBrowser: {
+//                            options: {
+//                                fragmentServiceUrl: that.options.subscribableTabUrl,
+//                                listeners: {
+//                                    onFragmentSelect: function(componentThat, fragment) {
+//                                        var lastTab, targetId;
+//
+//                                        // use the current last tab as the target id
+//                                        lastTab = $("[id*=portalNavigation_]:last");
+//                                        targetId = up.defaultNodeIdExtractor(lastTab);
+//
+//                                        // update the layout with the new
+//                                        // tab subscription
+//                                        that.persistence.update(
+//                                            {
+//                                                action: "subscribeToTab",
+//                                                sourceID: fragment.ownerID,
+//                                                method: 'appendAfter',
+//                                                elementID: targetId
+//                                            },
+//                                            function(data) {
+//                                                // redirect the browser to the
+//                                                // new tab
+//                                                window.location = that.urlProvider.getTabUrl(data.tabId);
+//                                            }
+//                                        );
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                },
+//
+//                // use stuff pane
+//                useContentPane: {
+//                    options: {
+//                        listeners: {
+//                            // add a PortletBrowser to the use content pane
+//                            onInitialize: function (overallThat) {
+//                                up.PortletBrowser(".use-content", overallThat, {
+//                                    portletRegistry: {
+//                                        options: { portletListUrl: that.options.channelRegistryUrl }
+//                                    },
+//                                    categoryListView: {
+//                                        type: "up.AjaxLayoutCategoryListView",
+//                                        options: {rootCategoryName: that.options.messages.allCategories}
+//                                    },
+//                                    portletListView: {
+//                                        type: "up.AjaxLayoutPortletListView"
+//                                    },
+//                                    searchView: {
+//                                        options: {searchInvitationMessage: that.options.messages.searchForStuff}
+//                                    },
+//                                    listeners: {
+//                                        // on portlet selection, redirect the
+//                                        // browser to the selected portlet's
+//                                        // focus URL
+//                                        onPortletSelect: function(componentThat, portlet) {
+//                                            window.location = that.urlProvider.getPortletUrl(portlet.fname);
+//                                        }
+//                                    }
+//                                });
+//                            }
+//                        }
+//                    }
+//                },
+//
+//                // colors pane
+//                skinPane: {
+//                    options: {
+//                        listeners: {
+//                            onInitialize: function (overallThat) {
+//                                // add a SkinSelector component to the skin pane
+//                                up.SkinSelector(".skins", {
+//                                    listeners: {
+//                                        // when a skin is selected, update the
+//                                        // persisted skin choice and reload
+//                                        // the page with the new skin
+//                                        onSelectSkin: function (skin) {
+//                                            that.persistence.update(
+//                                                { action: 'chooseSkin', skinName: skin.key },
+//                                                function (data) {
+//                                                    window.location = that.urlProvider.getTabUrl(getActiveTabId());
+//                                                }
+//                                            );
+//                                        }
+//                                    },
+//                                    currentSkin: that.options.currentSkin,
+//                                    skinListURL: (that.options.mediaPath + "/skinList.xml"),
+//                                    mediaPath: that.options.mediaPath
+//                                });
+//                            }
+//                        }
+//                    }
+//                },
+//
+//                // layouts pane
+//                layoutPane: {
+//                    options: {
+//                        listeners: {
+//                            onInitialize: function (overallThat) {
+//                                // add a LayoutSelector component to the
+//                                // layouts pane
+//                                up.LayoutSelector(".layouts-list", {
+//                                    currentLayout: getCurrentLayout(),
+//                                    layouts: getPermittedLayouts(),
+//                                    imagePath: that.options.mediaPath + "/common/images/",
+//                                    listeners: {
+//                                        // when a new layout is selected, call
+//                                        // the locally-defined column update
+//                                        // method
+//                                        onLayoutSelect: function(layout, componentThat) {
+//                                            updateColumns(layout, that);
+//                                        }
+//                                    },
+//                                    strings: that.options.messages
+//                                });
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        );
         
         that.components.tabManager = up.TabManager("#portalNavigation", {
             listeners: {
