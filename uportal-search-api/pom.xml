@@ -20,6 +20,12 @@
             <artifactId>jaxb2-basics-runtime</artifactId>
         </dependency>
     </dependencies>
+
+    <properties>
+       <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+       <additionalparam>-Xdoclint:none</additionalparam>
+       <maven.test.skip>true</maven.test.skip>
+    </properties>    
     
     <build>
         <plugins>
