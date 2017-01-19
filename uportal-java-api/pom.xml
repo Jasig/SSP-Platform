@@ -19,10 +19,10 @@
     <url>http://www.studentsuccessplan.org/</url>
 
     <scm>
-        <connection>scm:git:git://github.com/Jasig/uPortal.git</connection>
-        <developerConnection>scm:git:git@github.com:Jasig/uPortal.git</developerConnection>
-        <url>https://github.com/Jasig/uPortal</url>
-      <tag>HEAD</tag>
+        <connection>scm:git:git://github.com/Jasig/SSP-Platform.git</connection>
+        <developerConnection>scm:git:git@github.com:Jasig/SSP-Platform.git</developerConnection>
+        <url>https://github.com/Jasig/SSP-Platform</url>
+        <tag>HEAD</tag>
   </scm>
 
     <properties>
