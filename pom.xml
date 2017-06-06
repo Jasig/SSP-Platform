@@ -98,9 +98,9 @@
         <ssp.docbase>ssp-platform</ssp.docbase>
         <!--project-site-path>/uportal/${project.version}</project-site-path-->
 
-        <postgresql.groupId>postgresql</postgresql.groupId>
+        <postgresql.groupId>org.postgresql</postgresql.groupId>
         <postgresql.artifactId>postgresql</postgresql.artifactId>
-        <postgresql.version>8.4-701.jdbc4</postgresql.version>
+        <postgresql.version>42.1.1</postgresql.version>
 
         <mssql.groupId>net.sourceforge.jtds</mssql.groupId>
         <mssql.artifactId>jtds</mssql.artifactId>
